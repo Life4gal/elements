@@ -23,28 +23,28 @@ namespace cycfi { namespace elements
 
       using base_type = proxy<Subject>;
 
-                              size_element(point size, Subject subject);
+                              size_element(extent size, Subject subject);
 
       view_limits             limits(basic_context const& ctx) const override;
       void                    prepare_subject(context& ctx) override;
 
-      void                    fixed_size(point size) { _size = size; }
-      point                   fixed_size() const { return _size; }
+      void                    fixed_size(extent size) { _size = size; }
+      extent                  fixed_size() const { return _size; }
 
    private:
 
-      point          _size;
+       extent          _size;
    };
 
    template <typename Subject>
-   inline size_element<Subject>::size_element(point size, Subject subject)
+   inline size_element<Subject>::size_element(extent size, Subject subject)
     : base_type(std::move(subject))
     , _size(size)
    {}
 
    template <typename Subject>
    inline size_element<remove_cvref_t<Subject>>
-   fixed_size(point size, Subject&& subject)
+   fixed_size(extent size, Subject&& subject)
    {
       return { size, std::forward<Subject>(subject) };
    }
@@ -53,8 +53,8 @@ namespace cycfi { namespace elements
    inline view_limits size_element<Subject>::limits(basic_context const& ctx) const
    {
       auto  e_limits = this->subject().limits(ctx);
-      float size_x = _size.x;
-      float size_y = _size.y;
+      float size_x = _size.width;
+      float size_y = _size.height;
       clamp(size_x, e_limits.min.x, e_limits.max.x);
       clamp(size_y, e_limits.min.y, e_limits.max.y);
       return { { size_x, size_y }, { size_x, size_y } };
@@ -63,8 +63,8 @@ namespace cycfi { namespace elements
    template <typename Subject>
    inline void size_element<Subject>::prepare_subject(context& ctx)
    {
-      ctx.bounds.right = ctx.bounds.left + _size.x;
-      ctx.bounds.bottom = ctx.bounds.top + _size.y;
+      ctx.bounds.right = ctx.bounds.left + _size.width;
+      ctx.bounds.bottom = ctx.bounds.top + _size.height;
    }
 
    ////////////////////////////////////////////////////////////////////////////

@@ -123,9 +123,10 @@ namespace cycfi { namespace elements
    // Declared in context.hpp
    inline rect device_to_user(rect const& r, canvas& cnv)
    {
+       auto size = cnv.device_to_user(r.size().operator basic_point<point::coordinate_type>());
       return {
          cnv.device_to_user(r.top_left())
-       , extent(cnv.device_to_user(r.size()))
+       , size.x, size.y
       };
    }
 

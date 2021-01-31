@@ -507,7 +507,7 @@ namespace cycfi { namespace elements
    void base_view::size(elements::extent p)
    {
       // $$$ Wrong: don't size the window!!! $$$
-      gtk_window_resize(GTK_WINDOW(_view->widget), p.x, p.y);
+      gtk_window_resize(GTK_WINDOW(_view->widget), p.width, p.height);
    }
 
    float base_view::hdpi_scale() const

@@ -22,7 +22,7 @@ namespace cycfi { namespace elements
     : _pixmap(pixmap_)
    {}
 
-   point image::size() const
+   extent image::size() const
    {
       return _pixmap->size();
    }
@@ -35,7 +35,7 @@ namespace cycfi { namespace elements
    view_limits image::limits(basic_context const& /* ctx */) const
    {
       auto size_ = size();
-      return { { size_.x, size_.y }, { size_.x, size_.y } };
+      return { { size_.width, size_.height }, { size_.width, size_.height } };
    }
 
    void image::draw(context const& ctx)
@@ -108,7 +108,7 @@ namespace cycfi { namespace elements
    view_limits gizmo::limits(basic_context const& /* ctx */) const
    {
       auto size_ = size();
-      return { { size_.x, size_.y }, { full_extent, full_extent } };
+      return { { size_.width, size_.height }, { full_extent, full_extent } };
    }
 
    void gizmo::draw(context const& ctx)
@@ -116,7 +116,7 @@ namespace cycfi { namespace elements
       rect  src[9];
       rect  dest[9];
       auto  size_ = size();
-      rect  src_bounds{ 0, 0, size_.x, size_.y };
+      rect  src_bounds{ 0, 0, size_.width, size_.height };
 
       gizmo_parts(src_bounds, src_bounds, src);
       gizmo_parts(src_bounds, ctx.bounds, dest);
@@ -136,7 +136,7 @@ namespace cycfi { namespace elements
    view_limits hgizmo::limits(basic_context const& /* ctx */) const
    {
       auto size_ = size();
-      return { { size_.x, size_.y }, { size_.y, full_extent } };
+      return { { size_.width, size_.height }, { size_.height, full_extent } };
    }
 
    void hgizmo::draw(context const& ctx)
@@ -144,7 +144,7 @@ namespace cycfi { namespace elements
       rect  src[3];
       rect  dest[3];
       auto  size_ = size();
-      rect  src_bounds{ 0, 0, size_.x, size_.y };
+      rect  src_bounds{ 0, 0, size_.width, size_.height };
 
       hgizmo_parts(src_bounds, src_bounds, src);
       hgizmo_parts(src_bounds, ctx.bounds, dest);
@@ -164,7 +164,7 @@ namespace cycfi { namespace elements
    view_limits vgizmo::limits(basic_context const& /* ctx */) const
    {
       auto size_ = size();
-      return { { size_.x, size_.y }, { size_.x, full_extent } };
+      return { { size_.width, size_.height }, { size_.width, full_extent } };
    }
 
    void vgizmo::draw(context const& ctx)
@@ -172,7 +172,7 @@ namespace cycfi { namespace elements
       rect  src[3];
       rect  dest[3];
       auto  size_ = size();
-      rect  src_bounds{ 0, 0, size_.x, size_.y };
+      rect  src_bounds{ 0, 0, size_.width, size_.height };
 
       vgizmo_parts(src_bounds, src_bounds, src);
       vgizmo_parts(src_bounds, ctx.bounds, dest);
@@ -189,13 +189,13 @@ namespace cycfi { namespace elements
 
    view_limits basic_sprite::limits(basic_context const& /* ctx */) const
    {
-      auto width = pixmap().size().x;
+      auto width = pixmap().size().width;
       return { { width, _height }, { width, _height } };
    }
 
    std::size_t basic_sprite::num_frames() const
    {
-      return pixmap().size().y / _height;
+      return pixmap().size().height / _height;
    }
 
    void basic_sprite::index(std::size_t index_)
@@ -204,14 +204,14 @@ namespace cycfi { namespace elements
          _index = index_;
    }
 
-   point basic_sprite::size() const
+   extent basic_sprite::size() const
    {
-      return { pixmap().size().x, _height };
+      return { pixmap().size().width, _height };
    }
 
    rect basic_sprite::source_rect(context const& /* ctx */) const
    {
-      auto width = pixmap().size().x;
+      auto width = pixmap().size().width;
       return rect{ 0, _height * _index, width, _height * (_index + 1) };
    }
 }}

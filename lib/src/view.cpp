@@ -75,7 +75,7 @@
       canvas cnv{ *context_ };
       cnv.pre_scale(hdpi_scale());
       auto size_ = size();
-      rect subj_bounds = { 0, 0, size_.x, size_.y };
+      rect subj_bounds = { 0, 0, size_.width, size_.height };
       context ctx{ *this, cnv, &_main_element, subj_bounds };
 
       // layout the subject only if the window bounds changes

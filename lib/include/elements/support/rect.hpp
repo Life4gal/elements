@@ -1,62 +1,75 @@
-/*=============================================================================
-   Copyright (c) 2016-2020 Joel de Guzman
-
-   Distributed under the MIT License [ https://opensource.org/licenses/MIT ]
-=============================================================================*/
-#if !defined(ELEMENTS_RECT_APRIL_10_2016)
-#define ELEMENTS_RECT_APRIL_10_2016
+#ifndef ELEMENTS_RECT
+#define ELEMENTS_RECT
 
 #include <elements/support/point.hpp>
 
-namespace cycfi { namespace elements
+namespace cycfi::elements
 {
-   ////////////////////////////////////////////////////////////////////////////
-   // rect
-   ////////////////////////////////////////////////////////////////////////////
-   struct rect
-   {
-      constexpr         rect();
-      constexpr         rect(float left, float top, float right, float bottom);
-      constexpr         rect(point origin, float right, float bottom)
-                         : rect(origin.x, origin.y, right, bottom)
-                        {}
-      constexpr         rect(float left, float top, extent size)
-                         : rect(left, top, left + size.x, top + size.y)
-                        {}
-      constexpr         rect(point origin, extent size)
-                         : rect(origin.x, origin.y, origin.x + size.x, origin.y + size.y)
-                        {}
+    ////////////////////////////////////////////////////////////////////////////
+    // rect
+    ////////////////////////////////////////////////////////////////////////////
+    struct rect
+    {
+        using coordinate_type = point::coordinate_type;
 
-                        rect(rect const &) = default;
-      constexpr rect&   operator=(rect const&) = default;
+        constexpr         rect()
+            :
+              left(coordinate_type{}),
+              top(coordinate_type{}),
+              right(coordinate_type{}),
+              bottom(coordinate_type{}) {}
+        constexpr         rect(coordinate_type _left, coordinate_type _top, coordinate_type _right, coordinate_type _bottom)
+                :
+              left(_left),
+              top(_top),
+              right(_right),
+              bottom(_bottom) {}
+        constexpr         rect(point origin, coordinate_type right, coordinate_type bottom)
+            :
+              rect(origin.x, origin.y, right, bottom) {}
+        constexpr         rect(coordinate_type left, coordinate_type top, extent size)
+            :
+              rect(left, top, left + size.width, top + size.height) {}
+        constexpr         rect(point origin, extent size)
+            :
+              rect(origin.x, origin.y, origin.x + size.width, origin.y + size.height) {}
 
-      constexpr bool    operator==(rect const& other) const;
-      constexpr bool    operator!=(rect const& other) const;
+        constexpr bool    operator==(const rect & other) const
+        {
+            return other.left == left && other.top == top && other.right == right && other.bottom == bottom;
+        }
+        constexpr bool    operator!=(const rect & other) const
+        {
+            return !this->operator==(std::forward<const rect&>(other));
+        }
 
-      constexpr bool    is_empty() const;
-      constexpr bool    includes(point p) const;
-      constexpr bool    includes(rect other) const;
+        constexpr bool    is_empty() const
+        {
+            return left == right || top == bottom;
+        }
+        constexpr bool    includes(point p) const;
+        constexpr bool    includes(rect other) const;
 
-      constexpr float   width() const;
-      constexpr void    width(float width_);
-      constexpr float   height() const;
-      constexpr void    height(float height_);
-      constexpr extent  size() const;
-      constexpr void    size(extent size_);
+        constexpr float   width() const;
+        constexpr void    width(coordinate_type width_);
+        constexpr float   height() const;
+        constexpr void    height(coordinate_type height_);
+        constexpr extent  size() const;
+        constexpr void    size(extent size_);
 
-      constexpr point   top_left() const;
-      constexpr point   bottom_right() const;
-      constexpr point   top_right() const;
-      constexpr point   bottom_left() const;
+        constexpr point   top_left() const;
+        constexpr point   bottom_right() const;
+        constexpr point   top_right() const;
+        constexpr point   bottom_left() const;
 
-      constexpr rect    move(float dx, float dy) const;
-      constexpr rect    move_to(float x, float y) const;
-      constexpr rect    inset(float x_inset = 1.0, float y_inset = 1.0) const;
+        constexpr rect    move(coordinate_type dx, coordinate_type dy) const;
+        constexpr rect    move_to(coordinate_type x, coordinate_type y) const;
+        constexpr rect    inset(coordinate_type x_inset = 1.0, coordinate_type y_inset = 1.0) const;
 
-      float             left;
-      float             top;
-      float             right;
-      float             bottom;
+        coordinate_type             left;
+        coordinate_type             top;
+        coordinate_type             right;
+        coordinate_type             bottom;
    };
 
    ////////////////////////////////////////////////////////////////////////////
@@ -83,32 +96,6 @@ namespace cycfi { namespace elements
    ////////////////////////////////////////////////////////////////////////////
    // Inlines
    ////////////////////////////////////////////////////////////////////////////
-   constexpr rect::rect()
-    : left(0.0), top(0.0), right(0.0), bottom(0.0)
-   {}
-
-   constexpr rect::rect(float left, float top, float right, float bottom)
-    : left(left), top(top), right(right), bottom(bottom)
-   {}
-
-   constexpr bool rect::operator==(rect const& other) const
-   {
-      return
-         (top == other.top) && (bottom == other.bottom) &&
-         (left == other.left) && (right == other.right)
-         ;
-   }
-
-   constexpr bool rect::operator!=(rect const& other) const
-   {
-      return !(*this == other);
-   }
-
-   constexpr bool rect::is_empty() const
-   {
-      return (left == right) || (top == bottom);
-   }
-
    constexpr bool rect::includes(point p) const
    {
       return
@@ -154,8 +141,8 @@ namespace cycfi { namespace elements
 
    constexpr void rect::size(extent size_)
    {
-      right = left + size_.x;
-      bottom = top + size_.y;
+      right = left + size_.width;
+      bottom = top + size_.height;
    }
 
    constexpr point rect::top_left() const
@@ -234,6 +221,6 @@ namespace cycfi { namespace elements
       r.right = 0.0;
       r.bottom = 0.0;
    }
-}}
+}
 
 #endif

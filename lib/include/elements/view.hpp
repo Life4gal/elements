@@ -146,7 +146,7 @@ namespace cycfi { namespace elements
    inline rect view_bounds(view const& v) // declared in context.hpp
    {
       auto size = v.size();
-      return rect{ 0, 0, size.x, size.y };
+      return rect{ 0, 0, size.width, size.height };
    }
 
    inline rect view::dirty() const

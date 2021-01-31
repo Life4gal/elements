@@ -203,7 +203,8 @@ namespace cycfi { namespace elements
 
       // Draw some 3D highlight
       {
-         auto hcp = cp.center().move(-radius, -radius);
+         auto hcp = cp.center();
+         hcp.move_to(-radius, -radius);
          auto gradient = canvas::radial_gradient{
             hcp, radius*0.5f,
             hcp, radius*2
