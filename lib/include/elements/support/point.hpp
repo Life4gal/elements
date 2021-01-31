@@ -1,84 +1,61 @@
-/*=============================================================================
-   Copyright (c) 2016-2020 Joel de Guzman
+#ifndef ELEMENTS_POINT
+#define ELEMENTS_POINT
 
-   Distributed under the MIT License [ https://opensource.org/licenses/MIT ]
-=============================================================================*/
-#if !defined(ELEMENTS_POINT_APRIL_10_2016)
-#define ELEMENTS_POINT_APRIL_10_2016
+#include <type_traits>
 
-namespace cycfi { namespace elements
+namespace cycfi::elements
 {
-   ////////////////////////////////////////////////////////////////////////////
-   // Points
-   ////////////////////////////////////////////////////////////////////////////
-   struct point
-   {
-      constexpr         point();
-      constexpr         point(float x, float y);
-      constexpr         point(point const&) = default;
-      constexpr point&  operator=(point const &) = default;
+    ////////////////////////////////////////////////////////////////////////////
+    // Points
+    ////////////////////////////////////////////////////////////////////////////
+    template<typename CoordinateType, typename = std::enable_if_t<std::is_arithmetic_v<CoordinateType>>>
+    struct basic_point
+    {
+        using coordinate_type = CoordinateType;
 
-      constexpr bool    operator==(point const& other) const;
-      constexpr bool    operator!=(point const& other) const;
+        constexpr         basic_point() : x(coordinate_type{}), y(coordinate_type{}) {}
+        constexpr         basic_point(coordinate_type _x, coordinate_type _y) : x(_x), y(_y) {}
 
-      constexpr point   move(float dx, float dy) const;
-      constexpr point   move_to(float x, float y) const;
+        constexpr bool    operator==(const basic_point & other) const
+        {
+            return other.x == x && other.y == y;
+        }
+        constexpr bool    operator!=(const basic_point & other) const
+        {
+            return !this->operator==(other);
+        }
 
-      float             x;
-      float             y;
+        template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        constexpr void move_to(T dx, T dy)
+        {
+            x += dx;
+            y += dy;
+        }
+
+        coordinate_type             x;
+        coordinate_type             y;
+    };
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Sizes
+    ////////////////////////////////////////////////////////////////////////////
+    template<typename SizeType, typename = std::enable_if_t<std::is_arithmetic_v<SizeType>>>
+    struct basic_extent : basic_point<SizeType>
+    {
+        using size_type = SizeType;
+
+        using basic_point<size_type>::basic_point;
+
+        // extent will use this ctor, but the IDE always warning me that these ctor maybe not be used
+        [[maybe_unused]] explicit basic_extent(basic_point<size_type> p) : basic_point<size_type>(p) {}
+
+    private:
+        // do not use these
+        using basic_point<size_type>::move_to;
    };
 
-   ////////////////////////////////////////////////////////////////////////////
-   // Sizes
-   ////////////////////////////////////////////////////////////////////////////
-   struct extent : point
-   {
-      using point::point;
-
-                  extent(point p)
-                   : point(p)
-                  {}
-
-      point       move(float dx, float dy) const = delete;
-      point       move_to(float x, float y) const = delete;
-   };
-
-   ////////////////////////////////////////////////////////////////////////////
-   // Inlines
-   ////////////////////////////////////////////////////////////////////////////
-   inline constexpr point::point()
-    : x(0.0), y(0.0)
-   {}
-
-   inline constexpr point::point(float x, float y)
-    : x(x), y(y)
-   {}
-
-   inline constexpr bool point::operator==(point const& other) const
-   {
-      return (other.x == x) && (other.y == y);
-   }
-
-   inline constexpr bool point::operator!=(point const& other) const
-   {
-      return !(*this == other);
-   }
-
-   inline constexpr point point::move(float dx, float dy) const
-   {
-      point r = *this;
-      r.x += dx;
-      r.y += dy;
-      return r;
-   }
-
-   inline constexpr point point::move_to(float x_, float y_) const
-   {
-      point r = *this;
-      r.x = x_;
-      r.y = y_;
-      return r;
-   }
-}}
+    using point = basic_point<float>;
+    using extent = basic_extent<float>;
+}
 
 #endif

@@ -125,7 +125,7 @@ namespace cycfi { namespace elements
    {
       return {
          cnv.device_to_user(r.top_left())
-       , cnv.device_to_user(r.size())
+       , extent(cnv.device_to_user(r.size()))
       };
    }
 
