@@ -9,34 +9,10 @@ namespace cycfi::elements
     struct basic_rect;
     using rect = basic_rect<point::coordinate_type>;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Free Functions
-    ////////////////////////////////////////////////////////////////////////////
-    constexpr bool       is_valid(rect r);
-    constexpr bool       is_same_size(rect a, rect b);
-    bool                 intersects(rect a, rect b);
-
-    constexpr point      center_point(rect r);
-    constexpr float      area(rect r);
-    rect                 max(rect a, rect b);
-    rect                 min(rect a, rect b);
-
-    constexpr void       clear(rect& r);
-    rect                 center(rect r, rect encl);
-    rect                 center_h(rect r, rect encl);
-    rect                 center_v(rect r, rect encl);
-    rect                 align(rect r, rect encl, float x_align, float y_align);
-    rect                 align_h(rect r, rect encl, float x_align);
-    rect                 align_v(rect r, rect encl, float y_align);
-    rect                 clip(rect r, rect encl);
-
-    ////////////////////////////////////////////////////////////////////////////
-    // rect
-    ////////////////////////////////////////////////////////////////////////////
     template<typename CoordinateType, typename>
     struct basic_rect
     {
-        using coordinate_type = point::coordinate_type;
+        using coordinate_type = CoordinateType;
 
         constexpr basic_rect()
             :
@@ -102,84 +78,123 @@ namespace cycfi::elements
                    (other.bottom >= top) && (other.bottom < bottom);
         }
 
-        constexpr float width() const
+        [[nodiscard]] constexpr coordinate_type width() const
         {
             return right - left;
         }
 
-        constexpr void width(coordinate_type width_)
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        constexpr void widen(T width)
         {
-            right = left + width_;
+            right = left + width;
         }
 
-        constexpr float height() const
+        [[nodiscard]] constexpr coordinate_type height() const
         {
             return bottom - top;
         }
 
-        constexpr void height(coordinate_type height_)
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        constexpr void heighten(T height)
         {
-            bottom = top + height_;
+            bottom = top + height;
         }
 
-        constexpr extent size() const
+        [[nodiscard]] constexpr basic_extent<coordinate_type> size() const
         {
             return {width(), height()};
         }
 
-        constexpr void size(extent size_)
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        constexpr void resize_right(const basic_extent<T>& size)
         {
-            right = left + size_.width;
-            bottom = top + size_.height;
+            right = left + size.width;
+            bottom = top + size.height;
         }
 
-        constexpr point top_left() const
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        constexpr void resize_left(const basic_extent<T>& size)
+        {
+            left = right - size.width;
+            top = bottom - size.height;
+        }
+
+        constexpr void clear()
+        {
+            *this = basic_rect<coordinate_type>();
+        }
+
+        [[nodiscard]] constexpr basic_point<coordinate_type> left_top() const
         {
             return {left, top};
         }
 
-        constexpr point bottom_right() const
+        [[nodiscard]] constexpr basic_point<coordinate_type> right_bottom() const
         {
             return {right, bottom};
         }
 
-        constexpr point top_right() const
+        [[nodiscard]] constexpr basic_point<coordinate_type> right_top() const
         {
             return {right, top};
         }
 
-        constexpr point bottom_left() const
+        [[nodiscard]] constexpr basic_point<coordinate_type> left_bottom() const
         {
             return {left, bottom};
         }
 
-        constexpr rect move(coordinate_type dx, coordinate_type dy) const
+        template <typename T1, typename T2, typename = std::enable_if_t<std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> && std::is_convertible_v<T1, coordinate_type> && std::is_convertible_v<T2, coordinate_type>>>
+        constexpr basic_rect<coordinate_type> move(T1 dx, T2 dy) const
         {
             auto rect = *this;
-            rect.top += dy;
+
             rect.left += dx;
-            rect.bottom += dy;
             rect.right += dx;
+
+            rect.top += dy;
+            rect.bottom += dy;
+
             return rect;
         }
 
-        constexpr rect move_to(coordinate_type x, coordinate_type y) const
+        template <typename T1, typename T2, typename = std::enable_if_t<std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> && std::is_convertible_v<T1, coordinate_type> && std::is_convertible_v<T2, coordinate_type>>>
+        constexpr void reposition(T1 x, T2 y)
         {
-            return move(x-left, y-top);
+            right -= (left - x);
+            left = x;
+
+            bottom -= (top - y);
+            top = y;
         }
 
-        constexpr rect inset(coordinate_type x_inset = 1.0, coordinate_type y_inset = 1.0) const
+        template <typename T1, typename T2, typename = std::enable_if_t<std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> && std::is_convertible_v<T1, coordinate_type> && std::is_convertible_v<T2, coordinate_type>>>
+        [[nodiscard]] constexpr rect inset(T1 horizontal = 1, T2 vertical = 1) const
         {
             auto r = *this;
-            r.top += y_inset;
-            r.left += x_inset;
-            r.bottom -= y_inset;
-            r.right -= x_inset;
 
-            if (!is_valid(r))
-                clear(r);
+            r.left += horizontal;
+            r.right -= horizontal;
+
+            r.top += vertical;
+            r.bottom -= vertical;
+
+            if (!r.is_valid())
+            {
+                r.clear();
+            }
 
             return r;
+        }
+
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        constexpr bool is_intersects(const basic_rect<T>& other) const
+        {
+            if(other.left >= right || other.right <= left || other.top >= bottom || other.bottom <= top)
+            {
+                return false;
+            }
+            return true;
         }
 
         coordinate_type left;
@@ -188,15 +203,22 @@ namespace cycfi::elements
         coordinate_type bottom;
    };
 
-   constexpr bool is_valid(rect r)
-   {
-      return (r.left <= r.right) && (r.top <= r.bottom);
-   }
+    ////////////////////////////////////////////////////////////////////////////
+    // Free Functions
+    ////////////////////////////////////////////////////////////////////////////
 
-   constexpr bool is_same_size(rect a, rect b)
-   {
-      return (a.width() == b.width()) && (a.height() == b.height());
-   }
+    constexpr point      center_point(rect r);
+    constexpr float      area(rect r);
+    rect                 max(rect a, rect b);
+    rect                 min(rect a, rect b);
+
+    rect                 center(rect r, rect encl);
+    rect                 center_h(rect r, rect encl);
+    rect                 center_v(rect r, rect encl);
+    rect                 align(rect r, rect encl, float x_align, float y_align);
+    rect                 align_h(rect r, rect encl, float x_align);
+    rect                 align_v(rect r, rect encl, float y_align);
+    rect                 clip(rect r, rect encl);
 
    constexpr point center_point(rect r)
    {
@@ -206,14 +228,6 @@ namespace cycfi::elements
    constexpr float area(rect r)
    {
       return r.width() * r.height();
-   }
-
-   constexpr void clear(rect& r)
-   {
-      r.left = 0.0;
-      r.top  = 0.0;
-      r.right = 0.0;
-      r.bottom = 0.0;
    }
 }
 
