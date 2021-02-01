@@ -47,42 +47,59 @@ namespace cycfi::elements
 
         constexpr basic_rect(coordinate_type _left, coordinate_type _top, coordinate_type _right, coordinate_type _bottom)
                 : left(_left), top(_top), right(_right), bottom(_bottom) {}
-        constexpr basic_rect(point origin, coordinate_type right, coordinate_type bottom)
-            :
-                basic_rect(origin.x, origin.y, right, bottom) {}
-        constexpr basic_rect(coordinate_type left, coordinate_type top, extent size)
-            :
-                basic_rect(left, top, left + size.width, top + size.height) {}
-        constexpr basic_rect(point origin, extent size)
-            :
-        basic_rect(origin.x, origin.y, origin.x + size.width, origin.y + size.height) {}
 
-        constexpr bool operator==(const rect & other) const
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        constexpr basic_rect(const basic_point<T>& origin, coordinate_type right, coordinate_type bottom)
+            : basic_rect(origin.x, origin.y, right, bottom) {}
+
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        constexpr basic_rect(coordinate_type left, coordinate_type top, const basic_extent<T>& size)
+            : basic_rect(left, top, left + size.width, top + size.height) {}
+
+        template <typename T1, typename T2, typename T = std::common_type_t<T1, T2>, typename = std::enable_if_t<std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> && std::is_convertible_v<T1, T2>>>
+        constexpr basic_rect(const basic_point<T1>& origin, const basic_extent<T2>& size)
+            : basic_rect<T>(origin.x, origin.y, origin.x + size.width, origin.y + size.height) {}
+
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        constexpr bool operator==(const basic_rect<T> & other) const
         {
-            return other.left == left && other.top == top && other.right == right && other.bottom == bottom;
-        }
-        constexpr bool operator!=(const rect & other) const
-        {
-            return !this->operator==(std::forward<const rect&>(other));
+//            return basic_point<coordinate_type>{left, top} == basic_point<coordinate_type>{other.left, other.top}
+//                   && basic_point<coordinate_type>{right, bottom} == basic_point<coordinate_type>{other.right, other.bottom};
+
+          return other.left == left && other.top == top && other.right == right && other.bottom == bottom;
         }
 
-        constexpr bool is_empty() const
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        constexpr bool operator!=(const basic_rect<T> & other) const
+        {
+            return !this->operator==(std::forward<const basic_rect<T> &>(other));
+        }
+
+        [[nodiscard]] constexpr bool is_empty() const
         {
             return left == right || top == bottom;
         }
 
-        constexpr bool includes(point p) const
+        [[nodiscard]] constexpr bool is_valid() const
         {
-            return (p.x >= left) && (p.x <= right) &&
-                   (p.y >= top) && (p.y <= bottom);
+            return left <= right && top <= bottom;
         }
 
-        constexpr bool includes(rect other) const
+        // [x, y)
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        [[nodiscard]] constexpr bool includes(const basic_point<T>& p) const
         {
-            return (other.left >= left) && (other.left <= right) &&
-                   (other.top >= top) && (other.top <= bottom) &&
-                   (other.right >= left) && (other.right <= right) &&
-                   (other.bottom >= top) && (other.bottom <= bottom);
+            return p.template horizontal_between(left, right) && p.template vertical_between(top, bottom);
+        }
+
+        // [x, y)
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        [[nodiscard]] constexpr bool includes(const basic_rect<T>& other) const
+        {
+            return (other.left >= left) && (other.left < right) &&
+                   (other.top >= top) && (other.top < bottom) &&
+                   (other.right >= left) && (other.right < right) &&
+                   (other.bottom >= top) && (other.bottom < bottom);
         }
 
         constexpr float width() const

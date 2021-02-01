@@ -43,7 +43,7 @@ namespace cycfi::elements
 
    void progress_bar_base::draw(context const& ctx)
    {
-      if (intersects(ctx.bounds, ctx.view_bounds()))
+      if (ctx.bounds.is_intersects(ctx.view_bounds()))
       {
          {
             context sctx { ctx, &background(), ctx.bounds };
@@ -67,8 +67,8 @@ namespace cycfi::elements
    {
       auto const limits_ = background().limits(ctx);
       auto bounds = ctx.bounds;
-      bounds.height(std::min<float>(limits_.max.y, bounds.height()));
-      bounds.width(std::min<float>(limits_.max.x, bounds.width()));
+      bounds.heighten(std::min<float>(limits_.max.y, bounds.height()));
+      bounds.widen(std::min<float>(limits_.max.x, bounds.width()));
       return bounds;
    }
 
@@ -77,9 +77,9 @@ namespace cycfi::elements
       auto bounds = ctx.bounds;
 
       if (_is_horiz)
-         bounds.width(bounds.width() * value());
+          bounds.widen(bounds.width() * value());
       else
-         bounds.height(bounds.height() * (1.0 - value()));
+          bounds.heighten(bounds.height() * (1.0 - value()));
 
       return bounds;
    }

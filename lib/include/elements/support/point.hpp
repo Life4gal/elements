@@ -16,9 +16,6 @@ namespace cycfi::elements
     using point = basic_point<PointGenericCoordinateType>;
     using extent = basic_extent<ExtentGenericSizeType>;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Points
-    ////////////////////////////////////////////////////////////////////////////
     template<typename CoordinateType, typename>
     struct basic_point
     {
@@ -34,55 +31,55 @@ namespace cycfi::elements
             return basic_extent<coordinate_type>(x, y);
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool operator==(const basic_point<T>& other) const noexcept
         {
             return other.x == x && other.y == y;
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool operator!=(const basic_point<T>& other) const noexcept
         {
             return !this->operator==(std::forward<const basic_point<T>&>(other));
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool operator>(const basic_point<T>& other) const noexcept
         {
             return x > other.x && y > other.y;
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool operator>=(const basic_point<T>& other) const noexcept
         {
             return this->template operator>(std::forward<const basic_point<T>&>(other)) || this->template operator==(std::forward<const basic_point<T>&>(other));
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool operator<(const basic_point<T>& other) const noexcept
         {
             return !(this->template operator>=(std::forward<const basic_point<T>&>(other)));
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool operator<=(const basic_point<T>& other) const noexcept
         {
             return !(this->template operator>(std::forward<const basic_point<T>&>(other)));
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr basic_point operator+(const basic_point<T>& other) noexcept
         {
             return {other.x + x, other.y + y};
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr basic_point operator+(T distance) noexcept
         {
             return {x + distance, y + distance};
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr basic_point& operator+=(const basic_point<T>& other) noexcept
         {
             x += other.x;
@@ -90,7 +87,7 @@ namespace cycfi::elements
             return *this;
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr basic_point& operator+=(T distance) noexcept
         {
             x += distance;
@@ -98,19 +95,19 @@ namespace cycfi::elements
             return *this;
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr basic_point operator-(const basic_point<T>& other) noexcept
         {
             return {other.x - x, other.y - y};
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr basic_point operator-(T distance) noexcept
         {
             return {x - distance, y - distance};
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr basic_point& operator-=(const basic_point<T>& other) noexcept
         {
             x -= other.x;
@@ -118,7 +115,7 @@ namespace cycfi::elements
             return *this;
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr basic_point& operator-=(T distance) noexcept
         {
             x -= distance;
@@ -126,37 +123,37 @@ namespace cycfi::elements
             return *this;
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool horizontal_greater_than(T _x) const noexcept
         {
             return x > _x;
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool horizontal_equal(T _x) const noexcept
         {
             return x == _x;
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool horizontal_greater_equal(T _x) const noexcept
         {
             return horizontal_greater_than(_x) || horizontal_equal(_x);
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool vertical_greater_than(T _y) const noexcept
         {
             return y > _y;
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool vertical_equal(T _y) const noexcept
         {
             return y == _y;
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
         constexpr bool vertical_greater_equal(T _y) const noexcept
         {
             return vertical_greater_than(_y) || vertical_equal(_y);
@@ -190,14 +187,14 @@ namespace cycfi::elements
             return _y - y + x;
         }
 
-        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, CoordinateType>>>
-        constexpr auto get_distance(const basic_point<T>& other) noexcept
+        template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
+        [[maybe_unused]] constexpr auto get_distance(const basic_point<T>& other) noexcept
         {
             return std::sqrt(std::pow(horizontal_distance(std::forward<const basic_point<T>&>(other)), 2) + std::pow(vertical_distance(std::forward<const basic_point<T>&>(other)), 2));
         }
 
-        template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
-        constexpr void reposition(T _x, T _y) noexcept
+        template <typename T1, typename T2, typename = std::enable_if_t<std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> && std::is_convertible_v<T1, coordinate_type> && std::is_convertible_v<T2, coordinate_type>>>
+        constexpr void reposition(T1 _x, T2 _y) noexcept
         {
             x = _x;
             y = _y;
@@ -215,50 +212,47 @@ namespace cycfi::elements
             y += dy;
         }
 
-        template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
-        constexpr void move_to(T dx, T dy) noexcept
+        template <typename T1, typename T2, typename = std::enable_if_t<std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> && std::is_convertible_v<T1, coordinate_type> && std::is_convertible_v<T2, coordinate_type>>>
+        constexpr void move(T1 dx, T2 dy) noexcept
         {
             horizontal_move(dx);
             vertical_move(dy);
         }
 
         // clamp a point in the specified area (not allowed on the edge of the area)
-        template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
-        constexpr void clamp_upper(T _x, T _y) noexcept
+        template <typename T1, typename T2, typename = std::enable_if_t<std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> && std::is_convertible_v<T1, coordinate_type> && std::is_convertible_v<T2, coordinate_type>>>
+        constexpr void clamp_upper(T1 _x, T2 _y) noexcept
         {
             x = (x >= _x) ? (_x - 1) : x;
             y = (y >= _y) ? (_y - 1) : y;
         }
 
         // clamp a point in the specified area (allowed on the edge of the area)
-        template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
-        constexpr void clamp_lower(T _x, T _y) noexcept
+        template <typename T1, typename T2, typename = std::enable_if_t<std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> && std::is_convertible_v<T1, coordinate_type> && std::is_convertible_v<T2, coordinate_type>>>
+        constexpr void clamp_lower(T1 _x, T2 _y) noexcept
         {
             x = (x < _x) ? _x : x;
             y = (y < _y) ? _y : y;
         }
 
         // [x1, x2)
-        template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
-        constexpr bool horizontal_between(T x1, T x2) const noexcept
+        template <typename T1, typename T2, typename = std::enable_if_t<std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> && std::is_convertible_v<T1, coordinate_type> && std::is_convertible_v<T2, coordinate_type>>>
+        constexpr bool horizontal_between(T1 x1, T2 x2) const noexcept
         {
             return horizontal_greater_equal(x1) && !horizontal_greater_equal(x2);
         }
 
         // [y1, y2)
-        template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T> && std::is_convertible_v<T, coordinate_type>>>
-        constexpr bool vertical_between(T y1, T y2) const noexcept
+        template <typename T1, typename T2, typename = std::enable_if_t<std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2> && std::is_convertible_v<T1, coordinate_type> && std::is_convertible_v<T2, coordinate_type>>>
+        constexpr bool vertical_between(T1 y1, T2 y2) const noexcept
         {
             return vertical_greater_equal(y1) && !vertical_greater_equal(y2);
         }
 
-        coordinate_type             x;
-        coordinate_type             y;
+        coordinate_type x;
+        coordinate_type y;
     };
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Sizes
-    ////////////////////////////////////////////////////////////////////////////
     template<typename SizeType, typename>
     struct basic_extent
     {

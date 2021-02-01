@@ -61,8 +61,8 @@ namespace cycfi { namespace elements
 
             gtk_widget_show_all(win);
 
-            position(bounds.top_left());
-            size(bounds.bottom_right());
+            position(bounds.left_top());
+            size(bounds.right_bottom());
          };
 
       if (app_is_activated())

@@ -33,7 +33,7 @@ namespace cycfi { namespace elements
       auto  clip_extent = cnv.clip_extent();
       auto  top = ctx.bounds.top;
 
-      if (!intersects(ctx.bounds, clip_extent))
+      if (!ctx.bounds.is_intersects(clip_extent))
          return;
 
       auto it = std::lower_bound(_rows.begin(), _rows.end(),
@@ -51,8 +51,8 @@ namespace cycfi { namespace elements
          auto& row = *it;
          context rctx { ctx, row.elem_ptr.get(), ctx.bounds };
          rctx.bounds.top = top + row.pos;
-         rctx.bounds.height(row.height);
-         if (intersects(clip_extent, rctx.bounds))
+         rctx.bounds.heighten(row.height);
+         if (clip_extent.is_intersects(rctx.bounds))
          {
             if (!row.elem_ptr)
             {

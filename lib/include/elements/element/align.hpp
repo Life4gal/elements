@@ -95,7 +95,7 @@ namespace cycfi { namespace elements
          elem_width = std::min(available_width, e_limits.max.x);
 
       ctx.bounds.left += (available_width - elem_width) * this->align();
-      ctx.bounds.width(elem_width);
+      ctx.bounds.widen(elem_width);
    }
 
    ////////////////////////////////////////////////////////////////////////////
@@ -163,7 +163,7 @@ namespace cycfi { namespace elements
          elem_height = std::min(available_height, e_limits.max.y);
 
       ctx.bounds.top += (available_height - elem_height) * this->align();
-      ctx.bounds.height(elem_height);
+      ctx.bounds.heighten(elem_height);
    }
 
    ////////////////////////////////////////////////////////////////////////////

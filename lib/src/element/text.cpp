@@ -61,7 +61,7 @@ namespace cycfi { namespace elements
       if (_current_size.x != new_x || _current_size.y != new_y)
       {
          if (_current_size.x != -1 && _current_size.y != -1)
-            ctx.view.refresh(max(ctx.bounds, rect(ctx.bounds.top_left(), extent{_current_size})));
+            ctx.view.refresh(max(ctx.bounds, rect(ctx.bounds.left_top(), extent{_current_size})));
          else
             ctx.view.refresh(ctx.bounds);
       }
@@ -590,8 +590,8 @@ namespace cycfi { namespace elements
 
       if (_is_focus && has_caret && !_caret_started)
       {
-         auto tl = ctx.canvas.user_to_device(caret_bounds.top_left());
-         auto br = ctx.canvas.user_to_device(caret_bounds.bottom_right());
+         auto tl = ctx.canvas.user_to_device(caret_bounds.left_top());
+         auto br = ctx.canvas.user_to_device(caret_bounds.right_bottom());
          caret_bounds = { tl.x, tl.y, br.x, br.y };
 
          _caret_started = true;
@@ -636,14 +636,14 @@ namespace cycfi { namespace elements
          else
          {
             canvas.begin_path();
-            canvas.move_to(r1.top_left());
-            canvas.line_to(r1.top_right());
+            canvas.move_to(r1.left_top());
+            canvas.line_to(r1.right_top());
             canvas.line_to({ r1.right, r2.top });
-            canvas.line_to(r2.top_right());
-            canvas.line_to(r2.bottom_right());
-            canvas.line_to(r2.bottom_left());
+            canvas.line_to(r2.right_top());
+            canvas.line_to(r2.right_bottom());
+            canvas.line_to(r2.left_bottom());
             canvas.line_to({ r2.left, r1.bottom });
-            canvas.line_to(r1.bottom_left());
+            canvas.line_to(r1.left_bottom());
             canvas.close_path();
             canvas.fill();
          }

@@ -117,8 +117,7 @@ namespace cycfi { namespace elements
    ////////////////////////////////////////////////////////////////////////////
    void deck_element::draw(context const& ctx)
    {
-      rect bounds = bounds_of(ctx, _selected_index);
-      if (intersects(bounds, ctx.view_bounds()))
+      if (auto bounds = bounds_of(ctx, _selected_index); bounds.is_intersects(ctx.view_bounds()))
       {
          auto& elem = at(_selected_index);
          context ectx{ ctx, &elem, bounds };

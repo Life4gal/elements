@@ -17,7 +17,7 @@ namespace cycfi { namespace elements
       float       radius = size/2;
       float       dot_radius = radius/2.5;
 
-      box.width(size);
+      box.widen(size);
       point center = center_point(box);
       auto  state = value();
       auto  value = state.value;

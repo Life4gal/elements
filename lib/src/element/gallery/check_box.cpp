@@ -14,7 +14,7 @@ namespace cycfi { namespace elements
       auto const& theme_ = get_theme();
       rect        box = ctx.bounds.move(15, 0);
 
-      box.width(box.height());
+      box.widen(box.height());
       auto  state = value();
       auto  value = state.value;
       auto  hilite = state.hilite;

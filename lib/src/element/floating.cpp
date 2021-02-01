@@ -22,13 +22,13 @@ namespace cycfi { namespace elements
       float h = ctx.bounds.height();
 
       if (w < e_limits.min.x)
-         ctx.bounds.width(e_limits.min.x);
+          ctx.bounds.widen(e_limits.min.x);
       else if (w > e_limits.max.x)
-         ctx.bounds.width(e_limits.max.x);
+          ctx.bounds.widen(e_limits.max.x);
 
       if (h < e_limits.min.y)
-         ctx.bounds.height(e_limits.min.y);
+          ctx.bounds.heighten(e_limits.min.y);
       else if (h > e_limits.max.y)
-         ctx.bounds.height(e_limits.max.y);
+          ctx.bounds.heighten(e_limits.max.y);
    }
 }}

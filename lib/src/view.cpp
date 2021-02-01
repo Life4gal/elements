@@ -195,8 +195,8 @@
       }
       if (ctx_ptr)
       {
-         auto tl = ctx.canvas.user_to_device(ctx_ptr->bounds.top_left());
-         auto br = ctx.canvas.user_to_device(ctx_ptr->bounds.bottom_right());
+         auto tl = ctx.canvas.user_to_device(ctx_ptr->bounds.left_top());
+         auto br = ctx.canvas.user_to_device(ctx_ptr->bounds.right_bottom());
          refresh({ tl.x, tl.y, br.x, br.y });
       }
    }

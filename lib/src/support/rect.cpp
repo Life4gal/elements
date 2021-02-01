@@ -7,16 +7,9 @@
 #include <elements/support/rect.hpp>
 #include <algorithm>
 
-namespace cycfi { namespace elements
+namespace cycfi::elements
 {
-   bool intersects(rect a, rect b)
-   {
-      if (a.left >= b.right || b.left >= a.right)
-         return false;
-      if (a.top >= b.bottom || b.top >= a.bottom)
-         return false;
-      return true;
-   }
+
 
    rect max(rect a, rect b)
    {
@@ -42,7 +35,7 @@ namespace cycfi { namespace elements
    {
       float dx = (encl.width() - r.width()) / 2.0;
       float dy = (encl.height() - r.height()) / 2.0;
-      r = r.move_to(encl.left, encl.top);
+      r.reposition(encl.left, encl.top);
       r = r.move(dx, dy);
       return r;
    }
@@ -50,7 +43,7 @@ namespace cycfi { namespace elements
    rect center_h(rect r, rect encl)
    {
       float dx = (encl.width() - r.width()) / 2.0;
-      r = r.move_to(encl.left, r.top);
+      r.reposition(encl.left, r.top);
       r = r.move(dx, 0.0);
       return r;
    }
@@ -58,33 +51,26 @@ namespace cycfi { namespace elements
    rect center_v(rect r, rect encl)
    {
       float dy = (encl.height() - r.height()) / 2.0;
-      r = r.move_to(r.left, encl.top);
+      r.reposition(r.left, encl.top);
       r = r.move(0.0, dy);
       return r;
    }
 
    rect align(rect r, rect encl, float x_align, float y_align)
    {
-      r = r.move_to(
-         encl.left + ((encl.width() - r.width()) * x_align),
-         encl.top + ((encl.height() - r.height()) * y_align)
-      );
+       r.reposition(encl.left + ((encl.width() - r.width()) * x_align),encl.top + ((encl.height() - r.height()) * y_align));
       return r;
    }
 
    rect align_h(rect r, rect encl, float x_align)
    {
-      r = r.move_to(
-         encl.left + ((encl.width() - r.width()) * x_align), r.top
-      );
+       r.reposition(encl.left + ((encl.width() - r.width()) * x_align), r.top);
       return r;
    }
 
    rect align_v(rect r, rect encl, float y_align)
    {
-      r = r.move_to(
-         r.left, encl.top + ((encl.height() - r.height()) * y_align)
-      );
+       r.reposition(r.left, encl.top + ((encl.height() - r.height()) * y_align));
       return r;
    }
 
@@ -96,4 +82,4 @@ namespace cycfi { namespace elements
       clamp_max(r.bottom, encl.bottom);
       return r;
    }
-}}
+}

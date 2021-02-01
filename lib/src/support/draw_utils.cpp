@@ -11,8 +11,8 @@ namespace cycfi { namespace elements
    void draw_box_vgradient(canvas& cnv, rect bounds, float corner_radius)
    {
       auto gradient = canvas::linear_gradient{
-         bounds.top_left(),
-         bounds.bottom_left()
+               bounds.left_top(),
+               bounds.left_bottom()
       };
 
       gradient.add_color_stop({ 0.0f, rgba(255, 255, 255, 16) });
@@ -82,8 +82,8 @@ namespace cycfi { namespace elements
    void draw_button(canvas& cnv, rect bounds, color c, float corner_radius)
    {
       auto gradient = canvas::linear_gradient{
-         bounds.top_left(),
-         bounds.bottom_left()
+               bounds.left_top(),
+               bounds.left_bottom()
       };
 
       float const box_opacity = get_theme().element_background_opacity;
@@ -131,7 +131,7 @@ namespace cycfi { namespace elements
       // Draw some 3D highlight
       {
           auto hcp = cp.center();
-          hcp.move_to(-radius, -radius);
+          hcp.move(-radius, -radius);
           auto gradient = canvas::radial_gradient{
                   hcp, radius*0.5f,
                   hcp, radius*2
@@ -165,8 +165,8 @@ namespace cycfi { namespace elements
 
          auto bounds = cp.bounds();
          auto gradient = canvas::linear_gradient{
-            bounds.top_left(),
-            bounds.bottom_left()
+                 bounds.left_top(),
+                 bounds.left_bottom()
          };
 
          gradient.add_color_stop({ 1.0, rgba(255, 255, 255, 64) });
@@ -204,7 +204,7 @@ namespace cycfi { namespace elements
       // Draw some 3D highlight
       {
          auto hcp = cp.center();
-         hcp.move_to(-radius, -radius);
+         hcp.move(-radius, -radius);
          auto gradient = canvas::radial_gradient{
             hcp, radius*0.5f,
             hcp, radius*2

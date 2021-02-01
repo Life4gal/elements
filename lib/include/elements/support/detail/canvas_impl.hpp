@@ -125,7 +125,7 @@ namespace cycfi { namespace elements
    {
        auto size = cnv.device_to_user(r.size().operator basic_point<point::coordinate_type>());
       return {
-         cnv.device_to_user(r.top_left())
+         cnv.device_to_user(r.left_top())
        , size.x, size.y
       };
    }

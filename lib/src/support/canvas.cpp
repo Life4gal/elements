@@ -378,7 +378,7 @@ namespace cycfi { namespace elements
       auto  state = new_state();
       auto  w = dest.width();
       auto  h = dest.height();
-      translate(dest.top_left());
+      translate(dest.left_top());
       auto scale_ = point{ w/src.width(), h/src.height() };
       scale(scale_);
       cairo_set_source_surface(&_context, pm._surface, -src.left, -src.top);

@@ -48,7 +48,7 @@ namespace cycfi { namespace elements
 
    void slider_base::draw(context const& ctx)
    {
-      if (intersects(ctx.bounds, ctx.view_bounds()))
+      if (ctx.bounds.is_intersects(ctx.view_bounds()))
       {
          {
             context sctx { ctx, &track(), ctx.bounds };
@@ -82,7 +82,7 @@ namespace cycfi { namespace elements
 
       if (_is_horiz)
       {
-         bounds.height(std::min<float>(limits_.max.y, bounds.height()));
+          bounds.heighten(std::min<float>(limits_.max.y, bounds.height()));
          auto w2 = th_bounds.width() / 2;
          bounds.left += w2;
          bounds.right -= w2;
@@ -90,7 +90,7 @@ namespace cycfi { namespace elements
       }
       else
       {
-         bounds.width(std::min<float>(limits_.max.x, bounds.width()));
+          bounds.widen(std::min<float>(limits_.max.x, bounds.width()));
          auto h2 = th_bounds.height() / 2;
          bounds.top += h2;
          bounds.bottom -= h2;
@@ -110,12 +110,12 @@ namespace cycfi { namespace elements
 
       if (_is_horiz)
       {
-         bounds.width(tmb_w);
+          bounds.widen(tmb_w);
          return bounds.move((w - tmb_w) * value(), 0);
       }
       else
       {
-         bounds.height(tmb_h);
+          bounds.heighten(tmb_h);
          return bounds.move(0, (h - tmb_h) * (1.0 - value()));
          // Note: for vertical sliders, 0.0 is at the bottom, hence 1.0-value()
       }

@@ -42,9 +42,9 @@ namespace cycfi { namespace elements
       double         available_height  = ctx.parent->bounds.height();
 
       ctx.bounds.left -= (elem_width - available_width) * _halign;
-      ctx.bounds.width(elem_width);
+      ctx.bounds.widen(elem_width);
       ctx.bounds.top -= (elem_height - available_height) * _valign;
-      ctx.bounds.height(elem_height);
+      ctx.bounds.heighten(elem_height);
 
       subject().layout(ctx);
    }
@@ -65,7 +65,7 @@ namespace cycfi { namespace elements
       double         available_height  = ctx.parent->bounds.height();
 
       ctx.bounds.top -= (elem_height - available_height) * _valign;
-      ctx.bounds.height(elem_height);
+      ctx.bounds.heighten(elem_height);
 
       subject().layout(ctx);
    }
@@ -86,7 +86,7 @@ namespace cycfi { namespace elements
       double         available_width   = ctx.parent->bounds.width();
 
       ctx.bounds.left -= (elem_width - available_width) * _halign;
-      ctx.bounds.width(elem_width);
+      ctx.bounds.widen(elem_width);
 
       subject().layout(ctx);
    }
@@ -214,7 +214,7 @@ namespace cycfi { namespace elements
          double      available_height  = ctx.parent->bounds.height();
 
          ctx.bounds.top -= (elem_height - available_height) * valign();
-         ctx.bounds.height(elem_height);
+         ctx.bounds.heighten(elem_height);
       }
 
       if (allow_hscroll())
@@ -223,7 +223,7 @@ namespace cycfi { namespace elements
          double      available_width   = ctx.parent->bounds.width();
 
          ctx.bounds.left -= (elem_width - available_width) * halign();
-         ctx.bounds.width(elem_width);
+         ctx.bounds.widen(elem_width);
       }
       subject().layout(ctx);
    }

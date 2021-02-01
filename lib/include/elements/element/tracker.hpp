@@ -106,7 +106,7 @@ namespace cycfi { namespace elements
       this->on_tracking(ctx, element::while_tracking);
       state->previous = state->current;
       state->current = btn.pos;
-      state->current.move_to(-state->offset.x, -state->offset.y);
+      state->current.move(-state->offset.x, -state->offset.y);
       state->modifiers = btn.modifiers;
       keep_tracking(ctx, *state);
    }

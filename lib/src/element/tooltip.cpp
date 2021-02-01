@@ -10,10 +10,10 @@ namespace cycfi { namespace elements
 {
    rect tooltip_element::tip_bounds(context const& ctx) const
    {
-      auto limits_ = _tip->limits(ctx);
-      auto w = limits_.min.x;
-      auto h = limits_.min.y;
-      return rect{ 0, 0, w, h }.move_to(ctx.bounds.left, ctx.bounds.top-h);
+      auto [width, height] = _tip->limits(ctx).min;
+      auto ret = rect{0, 0, width, height};
+      ret.reposition(ctx.bounds.left, ctx.bounds.top - height);
+      return ret;
    }
 
    bool tooltip_element::cursor(context const& ctx, point p, cursor_tracking status)

@@ -216,9 +216,9 @@ namespace cycfi { namespace elements
    inline void min_size_element<Subject>::prepare_subject(context& ctx)
    {
       if (ctx.bounds.width() < _size.x)
-         ctx.bounds.width(_size.x);
+          ctx.bounds.widen(_size.x);
       if (ctx.bounds.height() < _size.y)
-         ctx.bounds.height(_size.x);
+          ctx.bounds.heighten(_size.x);
    }
 
    ////////////////////////////////////////////////////////////////////////////
@@ -268,7 +268,7 @@ namespace cycfi { namespace elements
    inline void hmin_size_element<Subject>::prepare_subject(context& ctx)
    {
       if (ctx.bounds.width() < _width)
-         ctx.bounds.width(_width);
+          ctx.bounds.widen(_width);
    }
 
    ////////////////////////////////////////////////////////////////////////////
@@ -318,7 +318,7 @@ namespace cycfi { namespace elements
    inline void vmin_size_element<Subject>::prepare_subject(context& ctx)
    {
       if (ctx.bounds.height() < _height)
-         ctx.bounds.height(_height);
+          ctx.bounds.heighten(_height);
    }
 
    ////////////////////////////////////////////////////////////////////////////
@@ -372,9 +372,9 @@ namespace cycfi { namespace elements
    inline void max_size_element<Subject>::prepare_subject(context& ctx)
    {
       if (ctx.bounds.width() > _size.x)
-         ctx.bounds.width(_size.x);
+          ctx.bounds.widen(_size.x);
       if (ctx.bounds.height() > _size.y)
-         ctx.bounds.height(_size.x);
+          ctx.bounds.heighten(_size.x);
    }
 
    ////////////////////////////////////////////////////////////////////////////
@@ -424,7 +424,7 @@ namespace cycfi { namespace elements
    inline void hmax_size_element<Subject>::prepare_subject(context& ctx)
    {
       if (ctx.bounds.width() > _size)
-         ctx.bounds.width(_size);
+          ctx.bounds.widen(_size);
    }
 
    ////////////////////////////////////////////////////////////////////////////
