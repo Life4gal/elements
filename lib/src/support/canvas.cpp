@@ -206,12 +206,12 @@ namespace cycfi { namespace elements
          cairo_arc(&_context, p.x, p.y, radius, start_angle, end_angle);
    }
 
-   void canvas::rect(struct rect r)
+   void canvas::rect(elements::rect r)
    {
       cairo_rectangle(&_context, r.left, r.top, r.width(), r.height());
    }
 
-   void canvas::round_rect(struct rect bounds, float radius)
+   void canvas::round_rect(elements::rect bounds, float radius)
    {
       auto x = bounds.left;
       auto y = bounds.top;

@@ -8,10 +8,18 @@ namespace cycfi::elements
 {
     template<typename SizeType, typename = std::enable_if_t<std::is_arithmetic_v<SizeType>>>
     struct basic_extent;
+    template<typename CoordinateType, typename = std::enable_if_t<std::is_arithmetic_v<CoordinateType>>>
+    struct basic_point;
+    // use this customize the type of point and extent(and other class which use them)
+    using PointGenericCoordinateType = float;
+    using ExtentGenericSizeType = float;
+    using point = basic_point<PointGenericCoordinateType>;
+    using extent = basic_extent<ExtentGenericSizeType>;
+
     ////////////////////////////////////////////////////////////////////////////
     // Points
     ////////////////////////////////////////////////////////////////////////////
-    template<typename CoordinateType, typename = std::enable_if_t<std::is_arithmetic_v<CoordinateType>>>
+    template<typename CoordinateType, typename>
     struct basic_point
     {
         using coordinate_type = CoordinateType;
@@ -269,9 +277,6 @@ namespace cycfi::elements
         size_type width;
         size_type height;
    };
-
-    using point = basic_point<float>;
-    using extent = basic_extent<float>;
 }
 
 #endif

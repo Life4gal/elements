@@ -20,7 +20,7 @@ namespace cycfi { namespace elements
       return _context;
    }
 
-   inline void canvas::circle(struct circle c)
+   inline void canvas::circle(elements::circle c)
    {
       arc(point{ c.cx, c.cy }, c.radius, 0.0, 2 * M_PI);
    }
@@ -35,25 +35,25 @@ namespace cycfi { namespace elements
       space.push_back(cs);
    }
 
-   inline void canvas::fill_rect(struct rect r)
+   inline void canvas::fill_rect(elements::rect r)
    {
       rect(r);
       fill();
    }
 
-   inline void canvas::fill_round_rect(struct rect r, float radius)
+   inline void canvas::fill_round_rect(elements::rect r, float radius)
    {
       round_rect(r, radius);
       fill();
    }
 
-   inline void canvas::stroke_rect(struct rect r)
+   inline void canvas::stroke_rect(elements::rect r)
    {
       rect(r);
       stroke();
    }
 
-   inline void canvas::stroke_round_rect(struct rect r, float radius)
+   inline void canvas::stroke_round_rect(elements::rect r, float radius)
    {
       round_rect(r, radius);
       stroke();
