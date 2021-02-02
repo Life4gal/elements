@@ -51,7 +51,7 @@ namespace cycfi { namespace elements
       using namespace radial_consts;
 
       point p = track_info.current;
-      point center = center_point(ctx.bounds);
+      point center = ctx.bounds.center_point();
       double angle = -std::atan2(p.x-center.x, p.y-center.y);
       if (angle < 0.0)
          angle += _2pi;

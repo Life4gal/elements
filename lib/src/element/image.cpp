@@ -65,10 +65,10 @@ namespace cycfi { namespace elements
          parts[2] = corner.move(dest.right - (div_h+1), dest.top);
          parts[3] = corner.move(dest.right - (div_h+1), dest.bottom - (div_v+1));
 
-         parts[4] = max(parts[0], parts[1]).inset(0, div_v);
-         parts[5] = max(parts[0], parts[2]).inset(div_h, 0);
-         parts[6] = max(parts[2], parts[3]).inset(0, div_v);
-         parts[7] = max(parts[1], parts[3]).inset(div_h, 0);
+         parts[4] = parts[0].reconstruct_max_with(parts[1]).inset(0, div_v);
+         parts[5] = parts[0].reconstruct_max_with(parts[2]).inset(div_h, 0);
+         parts[6] = parts[2].reconstruct_max_with(parts[3]).inset(0, div_v);
+         parts[7] = parts[1].reconstruct_max_with(parts[3]).inset(div_h, 0);
          parts[8] = dest.inset(div_h-1, div_v-1);
       }
 
@@ -81,7 +81,7 @@ namespace cycfi { namespace elements
 
          parts[0] = corner.move(dest.left, dest.top);
          parts[1] = corner.move(dest.right - (div_h+1), dest.top);
-         parts[2] = max(parts[0], parts[1]).inset(div_h, 0);
+         parts[2] = parts[0].reconstruct_max_with(parts[1]).inset(div_h, 0);
       }
 
       void vgizmo_parts(rect src, rect dest, rect parts[9])
@@ -93,7 +93,7 @@ namespace cycfi { namespace elements
 
          parts[0] = corner.move(dest.left, dest.top);
          parts[1] = corner.move(dest.left, dest.bottom - (div_v+1));
-         parts[2] = max(parts[0], parts[1]).inset(0, div_v);
+         parts[2] = parts[0].reconstruct_max_with(parts[1]).inset(0, div_v);
       }
    }
 

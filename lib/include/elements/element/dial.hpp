@@ -107,7 +107,7 @@ namespace cycfi { namespace elements
       auto& thm = get_theme();
       auto& cnv = ctx.canvas;
       auto  indicator_color = thm.indicator_color.level(1.5);
-      auto  cp = circle{ center_point(ctx.bounds), ctx.bounds.width()/2 };
+      auto  cp = circle{ ctx.bounds.center_point(), ctx.bounds.width()/2 };
 
       draw_knob(cnv, cp, _color);
       draw_radial_indicator(cnv, cp, _value, indicator_color);
@@ -195,7 +195,7 @@ namespace cycfi { namespace elements
       base_type::draw(ctx);
 
       // Draw radial lines
-      auto cp = circle{ center_point(ctx.bounds), ctx.bounds.width()/2 };
+      auto cp = circle{ ctx.bounds.center_point(), ctx.bounds.width()/2 };
       draw_radial_marks(ctx.canvas, cp, size-2, colors::light_gray);
    }
 
@@ -237,7 +237,7 @@ namespace cycfi { namespace elements
       base_type::draw(ctx);
 
       // Draw the labels
-      auto cp = circle{ center_point(ctx.bounds), ctx.bounds.width()/2 };
+      auto cp = circle{ ctx.bounds.center_point(), ctx.bounds.width()/2 };
       draw_radial_labels(
          ctx.canvas, cp, _font_size, _labels.data(), num_labels);
    }

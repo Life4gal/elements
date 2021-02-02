@@ -197,7 +197,7 @@ namespace cycfi { namespace elements
       auto& thm = get_theme();
       auto& cnv = ctx.canvas;
       auto  indicator_color = thm.indicator_color.level(1.5);
-      auto  cp = circle{ center_point(ctx.bounds), size/2.0f };
+      auto  cp = circle{ ctx.bounds.center_point(), size/2.0f };
 
       draw_thumb(cnv, cp, _color, indicator_color);
    }

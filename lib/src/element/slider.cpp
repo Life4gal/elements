@@ -86,7 +86,7 @@ namespace cycfi { namespace elements
          auto w2 = th_bounds.width() / 2;
          bounds.left += w2;
          bounds.right -= w2;
-         bounds = center_v(bounds, ctx.bounds);
+         bounds.move_to_vertical_center(ctx.bounds);
       }
       else
       {
@@ -94,7 +94,7 @@ namespace cycfi { namespace elements
          auto h2 = th_bounds.height() / 2;
          bounds.top += h2;
          bounds.bottom -= h2;
-         bounds = center_h(bounds, ctx.bounds);
+         bounds.move_to_horizontal_center(ctx.bounds);
       }
       return bounds;
    }
@@ -145,7 +145,7 @@ namespace cycfi { namespace elements
       auto tmb_bounds = thumb_bounds(ctx);
       if (tmb_bounds.includes(track_info.current))
       {
-         auto cp = center_point(tmb_bounds);
+         auto cp = tmb_bounds.center_point();
          track_info.offset.x = track_info.current.x - cp.x;
          track_info.offset.y = track_info.current.y - cp.y;
       }

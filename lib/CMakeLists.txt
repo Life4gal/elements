@@ -44,7 +44,6 @@ set(ELEMENTS_SOURCES
    src/support/font.cpp
    src/support/glyphs.cpp
    src/support/pixmap.cpp
-   src/support/rect.cpp
    src/support/resource_paths.cpp
    src/support/text_utils.cpp
    src/support/theme.cpp

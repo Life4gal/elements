@@ -79,17 +79,17 @@ void my_custom_control::draw(context const& ctx)
    // Draw a circle.
    ctx.canvas.line_width(1.0);
    ctx.canvas.stroke_style(color(0, 0, 0.5));
-   auto outer_ring = circle(center_point(ctx.bounds), _radius);
+   auto outer_ring = circle(ctx.bounds.center_point(), _radius);
    ctx.canvas.circle(outer_ring);
    ctx.canvas.stroke();
 
    // Center points for four knobs.
    _knobs = point_array
       {
-         point(outer_ring.bounds().left, center_point(ctx.bounds).y),
-         point(outer_ring.bounds().right, center_point(ctx.bounds).y),
-         point(center_point(ctx.bounds).x, outer_ring.bounds().top),
-         point(center_point(ctx.bounds).x, outer_ring.bounds().bottom),
+         point(outer_ring.bounds().left, ctx.bounds.center_point().y),
+         point(outer_ring.bounds().right, ctx.bounds.center_point().y),
+         point(ctx.bounds.center_point().x, outer_ring.bounds().top),
+         point(ctx.bounds.center_point().x, outer_ring.bounds().bottom),
       };
 
    // Draw four knobs.
@@ -157,7 +157,7 @@ bool my_custom_control::click(context const& ctx, mouse_button btn)
 ///////////////////////////////////////////////////////////////////////////////
 void my_custom_control::keep_tracking(context const& ctx, tracker_info& track_info)
 {
-   auto center = center_point(ctx.bounds);
+   auto center = ctx.bounds.center_point();
    _radius = std::abs(distance(center, track_info.current));
    clamp(_radius, 50, 150);
    if (on_change)

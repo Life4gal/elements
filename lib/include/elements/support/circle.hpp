@@ -53,7 +53,7 @@ namespace cycfi { namespace elements
    {}
 
    inline constexpr circle::circle(rect r)
-    : circle(center_point(r), std::min(r.width(), r.height()))
+    : circle(r.center_point(), std::min(r.width(), r.height()))
    {}
 
    inline bool circle::operator==(circle const& other) const
